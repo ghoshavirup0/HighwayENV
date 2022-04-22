@@ -1,21 +1,5 @@
-# highway-env
-
-[![build](https://github.com/eleurent/highway-env/workflows/build/badge.svg)](https://github.com/eleurent/highway-env/actions?query=workflow%3Abuild)
-[![Documentation Status](https://readthedocs.org/projects/highway-env/badge/?version=latest)](https://highway-env.readthedocs.io/en/latest/?badge=latest)
-[![Downloads](https://img.shields.io/pypi/dm/highway-env)](https://pypi.org/project/highway-env/)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/63847d9328f64fce9c137b03fcafcc27)](https://app.codacy.com/manual/eleurent/highway-env?utm_source=github.com&utm_medium=referral&utm_content=eleurent/highway-env&utm_campaign=Badge_Grade_Dashboard)
-[![Coverage](https://codecov.io/gh/eleurent/highway-env/branch/master/graph/badge.svg)](https://codecov.io/gh/eleurent/highway-env)
-[![GitHub contributors](https://img.shields.io/github/contributors/eleurent/highway-env)](https://github.com/eleurent/highway-env/graphs/contributors)
-[![Environments](https://img.shields.io/github/search/eleurent/highway-env/import%20filename:*_env%20path:highway_env/envs?label=environments)](#the-environments)
 
 A collection of environments for *autonomous driving* and tactical decision-making tasks
-
-<p align="center">
-    <img src="https://raw.githubusercontent.com/eleurent/highway-env/master/../gh-media/docs/media/highway-env.gif?raw=true"><br/>
-    <em>An episode of one of the environments available in highway-env.</em>
-</p>
-
-## [Try it on Google Colab! ![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](scripts)
 
 ## The environments
 
@@ -100,73 +84,91 @@ A continuous control task involving lane-keeping and obstacle avoidance.
     <em>The racetrack-v0 environment.</em>
 </p>
 
+## How to run the code??
 
-## Examples of agents
+Clone the repository in your local machine or cluster and install the following dependencies:
+<ul>
+<li>gym
+<li>numpy
+<li>pygame
+<li>matplotlib
+<li>pandas
+<li>scipy
+</ul>
 
-Agents solving the `highway-env` environments are available in the [eleurent/rl-agents](https://github.com/eleurent/rl-agents) and [DLR-RM/stable-baselines3](https://github.com/DLR-RM/stable-baselines3) repositories.
+<strong>Note:</strong> The code works with python version <strong>3.8</strong>. It is better to use <em>custom <strong>conda</strong> environment</em> to execute the program.
+```
+conda create --name custom_env python=3.8
+```
+All the dependencies with their corrosponding proper versions are mentioned in the <a href="requirements.txt" download>requirements.txt</a> file. Install all the dependencies by the following command in terminal
+```
+pip3 install -r requirements.txt
+```
 
-See the [documentation](https://highway-env.readthedocs.io/en/latest/quickstart.html#training-an-agent) for some examples and notebooks.
 
-### [Deep Q-Network](https://github.com/eleurent/rl-agents/tree/master/rl_agents/agents/deep_q_network)
-
-<p align="center">
-    <img src="https://raw.githubusercontent.com/eleurent/highway-env/master/../gh-media/docs/media/dqn.gif?raw=true"><br/>
-    <em>The DQN agent solving highway-v0.</em>
-</p>
-
-This model-free value-based reinforcement learning agent performs Q-learning with function approximation, using a neural network to represent the state-action value function Q.
-
-### [Deep Deterministic Policy Gradient](https://github.com/openai/baselines/tree/master/baselines/her)
-
-<p align="center">
-    <img src="https://raw.githubusercontent.com/eleurent/highway-env/master/../gh-media/docs/media/ddpg.gif?raw=true"><br/>
-    <em>The DDPG agent solving parking-v0.</em>
-</p>
-
-This model-free policy-based reinforcement learning agent is optimized directly by gradient ascent. It uses Hindsight Experience Replay to efficiently learn how to solve a goal-conditioned task.
-
-### [Value Iteration](https://github.com/eleurent/rl-agents/blob/master/rl_agents/agents/dynamic_programming/value_iteration.py)
-
-<p align="center">
-    <img src="https://raw.githubusercontent.com/eleurent/highway-env/master/../gh-media/docs/media/ttcvi.gif?raw=true"><br/>
-    <em>The Value Iteration agent solving highway-v0.</em>
-</p>
-
-The Value Iteration is only compatible with finite discrete MDPs, so the environment is first approximated by a [finite-mdp environment](https://github.com/eleurent/finite-mdp) using `env.to_finite_mdp()`. This simplified state representation describes the nearby traffic in terms of predicted Time-To-Collision (TTC) on each lane of the road. The transition model is simplistic and assumes that each vehicle will keep driving at a constant speed without changing lanes. This model bias can be a source of mistakes.
-
-The agent then performs a Value Iteration to compute the corresponding optimal state-value function.
-
-### [Monte-Carlo Tree Search](https://github.com/eleurent/rl-agents/blob/master/rl_agents/agents/tree_search/mcts.py)
-
-This agent leverages a transition and reward models to perform a stochastic tree search [(Coulom, 2006)](https://hal.inria.fr/inria-00116992/document) of the optimal trajectory. No particular assumption is required on the state representation or transition model.
-
-<p align="center">
-    <img src="https://raw.githubusercontent.com/eleurent/highway-env/master/../gh-media/docs/media/mcts.gif?raw=true"><br/>
-    <em>The MCTS agent solving highway-v0.</em>
-</p>
-
-## Installation
-
-`pip install highway-env`
 
 ## Usage
 
+Create a script in the <em>root</em> folder of the downloaded repository. 
+
+<strong>Sample Script</strong>
+
 ```python
+# Importing the libraries
 import gym
+from stable_baselines3 import DQN
+from stable_baselines3.common.vec_env import VecVideoRecorder, DummyVecEnv
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
 import highway_env
 
-env = gym.make("highway-v0")
 
-done = False
-while not done:
-    action = ... # Your agent code here
-    obs, reward, done, info = env.step(action)
-    env.render()
+if __name__ == '__main__':
+
+    # Selecting/Creating the environment
+    env = gym.make('highway-v0')
+    env = env.reset()
+    
+    # Training the model using Deep Q Network
+    model = DQN('CnnPolicy', DummyVecEnv([env]),
+                learning_rate=5e-4,
+                buffer_size=15000,
+                learning_starts=200,
+                batch_size=32,
+                gamma=0.8,
+                train_freq=1,
+                gradient_steps=1,
+                target_update_interval=50,
+                exploration_fraction=0.7,
+                verbose=1,
+                tensorboard_log="traied_cnn/")
+    model.learn(total_timesteps=int(1e5))
+    
+    # Saving the trained model
+    model.save("traied_cnn/model")
+
+    
+    # Loading the trained model
+    model = DQN.load("model")
+
+    # Rendering the model
+    env = gym.make('highway-v0')
+    obs = env.reset()
+    done = False
+    while not done:
+        action,_=model.predict(obs)
+        obs, _, done, _ = env.step(action)
+        env.render()
+    
+
 ```
 
-## Documentation
+The sample script should give output like the following
 
-Read the [documentation online](https://highway-env.readthedocs.io/).
+
+https://user-images.githubusercontent.com/57269014/164772662-93096bc2-003f-4efa-8d7e-0af95bd99eeb.mov
+
+
 
 ## Citing
 
@@ -213,14 +215,3 @@ List of publications & preprints using `highway-env` (please open a pull request
 *   [Accelerated Policy Evaluation: Learning Adversarial Environments with Adaptive Importance Sampling](https://arxiv.org/abs/2106.10566) (Jun 2021)
 *   [Learning Interaction-aware Guidance Policies for Motion Planning in Dense Traffic Scenarios](https://arxiv.org/abs/2107.04538) (Jul 2021)
 *   [Robust Predictable Control](https://arxiv.org/abs/2109.03214) (Sep 2021)
-
-PhD theses
-*   [Reinforcement learning for Dialogue Systems optimization with user adaptation](https://hal.inria.fr/tel-02422691/) (2019)
-*   [Safe and Efficient Reinforcement Learning for Behavioural Planning in Autonomous Driving](https://hal.inria.fr/tel-03035705/) (2020)
-*   [Many-agent Reinforcement Learning](https://discovery.ucl.ac.uk/id/eprint/10124273/) (2021)
-
-Master theses
-*   [Multi-Agent Reinforcement Learning with Application on Traffic Flow Control](https://www.diva-portal.org/smash/get/diva2:1573441/FULLTEXT01.pdf) (Jun 2021)
-*   [Deep Reinforcement Learning for Automated Parking](https://repositorio-aberto.up.pt/bitstream/10216/136074/2/494682.pdf) (Aug 2021)
-
-
