@@ -1,5 +1,6 @@
+<h1> Simulation of self-driving car in highway-environment incorporating NGSIM dataset </h1>
 
-A collection of environments for *autonomous driving* and tactical decision-making tasks
+A collection of environments for *self driving* and tactical decision-making tasks
 
 ## The environments
 
@@ -84,7 +85,7 @@ A continuous control task involving lane-keeping and obstacle avoidance.
     <em>The racetrack-v0 environment.</em>
 </p>
 
-## How to run the code??
+## Program requirements
 
 Clone the repository in your local machine or cluster and install the following dependencies:
 <ul>
@@ -100,14 +101,14 @@ Clone the repository in your local machine or cluster and install the following 
 ```
 conda create --name custom_env python=3.8
 ```
-All the dependencies with their corrosponding proper versions are mentioned in the <a href="requirements.txt" download>requirements.txt</a> file. Install all the dependencies by the following command in terminal
+All the dependencies with their corrosponding proper versions are mentioned in the <a href="https://github.com/ghoshavirup0/HighwayENV/blob/master/requirements.txt" download>requirements.txt</a> file. Install all the dependencies by the following command in terminal
 ```
 pip3 install -r requirements.txt
 ```
 
 
 
-## Usage
+## Execution
 
 Create a script in the <em>root</em> folder of the downloaded repository. 
 
@@ -168,19 +169,35 @@ The sample script should give output like the following
 
 https://user-images.githubusercontent.com/57269014/164772662-93096bc2-003f-4efa-8d7e-0af95bd99eeb.mov
 
+## Customizing the environment
 
+The following aspects of the environment can be customized as per requirement 
+<ul>
+    <li>Lane count</li>
+    <li>NPC vehicle count (Vehicles that follows NGSIM dataset)</li>
+    <li>Duration of the simulation</li>
+    <li>Collision reward</li>
+    <li>Lane change reward</li>
+    <li>High speed reward</li>
+    <li>Right lane reward</li>
+    <li>Spacing of vehicles</li>
+    <li>Vehicle density</li>
+    <li>Initial lane for the <em>EGO</em> vehicle</li>   
+</ul>
+    
+To customize the parameters navigate to <strong><em>highway_env/envs</em></strong> from the <em>root</em> folder and select your currnet working environment and edit the parameters as per requirement.
 
 ## Citing
 
 If you use the project in your work, please consider citing it with:
 ```bibtex
-@misc{highway-env,
-  author = {Leurent, Edouard},
-  title = {An Environment for Autonomous Driving Decision-Making},
-  year = {2018},
+  @misc{highway-env-NGSIM},
+  author = {Avirup Ghosh},
+  title = {Simulation of self-driving car in highway-environment incorporating NGSIM dataset},
+  year = {2022},
   publisher = {GitHub},
   journal = {GitHub repository},
-  howpublished = {\url{https://github.com/eleurent/highway-env}},
+  howpublished = {\url{https://github.com/ghoshavirup0/HighwayENV}},
 }
 ```
 
@@ -215,3 +232,4 @@ List of publications & preprints using `highway-env` (please open a pull request
 *   [Accelerated Policy Evaluation: Learning Adversarial Environments with Adaptive Importance Sampling](https://arxiv.org/abs/2106.10566) (Jun 2021)
 *   [Learning Interaction-aware Guidance Policies for Motion Planning in Dense Traffic Scenarios](https://arxiv.org/abs/2107.04538) (Jul 2021)
 *   [Robust Predictable Control](https://arxiv.org/abs/2109.03214) (Sep 2021)
+*   [Driving-IRL-NGSIM] (https://github.com/MCZhi/Driving-IRL-NGSIM) (Nov 2021)
