@@ -1,0 +1,1 @@
+gym==0.20.0gym-notices==0.0.6gym-robotics==0.1.0cloudpickle==2.0.0pandas==1.4.1Pillow==9.0.1scipy==1.8.0stable-baselines3==1.5.0torch==1.11.0matplotlibpygamenumpy
